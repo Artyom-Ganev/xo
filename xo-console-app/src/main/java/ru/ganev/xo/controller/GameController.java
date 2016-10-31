@@ -9,16 +9,7 @@ import static ru.ganev.xo.model.Figure.X;
 
 public class GameController {
 
-    public static void newGame() {
-        Game game = Game.builder()
-                .player(Player.builder()
-                        .name("Player1")
-                        .build(), X)
-                .player(Player.builder()
-                        .name("Player1")
-                        .build(), O)
-                .dimension(5)
-                .build();
+    public static void newGame(Game game) {
         FieldViewer.redrow(game);
     }
 

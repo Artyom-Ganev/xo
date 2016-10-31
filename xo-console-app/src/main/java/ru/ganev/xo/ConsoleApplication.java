@@ -5,6 +5,7 @@ import ru.ganev.xo.view.FieldViewer;
 public class ConsoleApplication {
 
     public static void main(String[] args) {
-        FieldViewer.startMenu();
+        FieldViewer viewer = new FieldViewer();
+        viewer.startMenu();
     }
 }
