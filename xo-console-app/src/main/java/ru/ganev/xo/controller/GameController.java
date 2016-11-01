@@ -1,16 +1,18 @@
 package ru.ganev.xo.controller;
 
 import ru.ganev.xo.model.Game;
-import ru.ganev.xo.model.Player;
-import ru.ganev.xo.view.FieldViewer;
+import ru.ganev.xo.model.GameSettings;
+import ru.ganev.xo.view.View;
 
-import static ru.ganev.xo.model.Figure.O;
-import static ru.ganev.xo.model.Figure.X;
+public class GameController implements Controller {
 
-public class GameController {
+    private Game game;
 
-    public static void newGame(Game game) {
-        FieldViewer.redrow(game);
+    public GameController() {
     }
 
+    @Override
+    public void startGame(View view) {
+        GameSettings settings = new GameSettings();
+    }
 }
