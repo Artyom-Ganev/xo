@@ -3,6 +3,7 @@ package ru.ganev.xo.model;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Consumer;
 
 import static ru.ganev.xo.model.Figure.O;
 import static ru.ganev.xo.model.Figure.X;
@@ -42,8 +43,16 @@ public class Game {
         private GameBuilder() {
         }
 
-        public GameBuilder player(Player player, Figure figure) {
-            players.put(figure, player);
+        public GameBuilder player(Player player) {
+            players.put(player.getFigure(), player);
+            return this;
+        }
+
+        public GameBuilder player(Consumer<Player.PlayerBuilder> filler) {
+            Player.PlayerBuilder builder = Player.builder();
+            filler.accept(builder);
+            Player player = builder.build();
+            players.put(player.getFigure(), player);
             return this;
         }
 

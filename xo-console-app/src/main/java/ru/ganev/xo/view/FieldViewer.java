@@ -130,30 +130,8 @@ public class FieldViewer {
         out.println(String.format("Insert Player%s name", i));
         try {
             String name = reader.readLine();
-            Figure figure = null;
-            while (figure == null) {
-                out.println();
-                out.println(String.format("Select Player%s figure (X or O)", i));
-                String choice = reader.readLine();
-                switch (choice) {
-                    case "x":
-                    case "X":
-                        figure = X;
-                        break;
-                    case "0":
-                    case "o":
-                    case "O":
-                        figure = O;
-                        break;
-                    default:
-                        out.println();
-                        out.println("Incorrect choice. Please select X or O");
-                }
-            }
-            gameBuilder.player(Player.builder()
-                    .name(name)
-                    .figure(figure)
-                    .build(), figure);
+            Figure figure = selectFigure(i);
+            gameBuilder.player(builder -> builder.name(name).figure(figure));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -171,6 +149,26 @@ public class FieldViewer {
                 })
                 .build()
                 .execute();
+    }
+
+    private Figure selectFigure(int i) throws IOException{
+        while (true) {
+            out.println();
+            out.println(String.format("Select Player%s figure (X or O)", i));
+            String choice = reader.readLine();
+            switch (choice) {
+                case "x":
+                case "X":
+                    return X;
+                case "0":
+                case "o":
+                case "O":
+                    return O;
+                default:
+                    out.println();
+                    out.println("Incorrect choice. Please select X or O");
+            }
+        }
     }
 
 }
