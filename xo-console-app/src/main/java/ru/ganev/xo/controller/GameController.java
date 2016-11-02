@@ -7,12 +7,13 @@ import ru.ganev.xo.view.View;
 public class GameController implements Controller {
 
     private Game game;
+    private GameSettings settings;
 
     public GameController() {
     }
 
     @Override
     public void startGame(View view) {
-        GameSettings settings = new GameSettings();
+        settings = view.startGameMenu(new GameSettings());
     }
 }

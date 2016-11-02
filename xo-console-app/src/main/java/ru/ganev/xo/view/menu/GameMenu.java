@@ -2,6 +2,8 @@ package ru.ganev.xo.view.menu;
 
 import java.util.Arrays;
 
+import ru.ganev.xo.exception.IncorrectMenuChoice;
+
 public enum GameMenu {
 
     PLAY(1, "Play"),
@@ -20,6 +22,20 @@ public enum GameMenu {
         Arrays.stream(values())
                 .map(v -> v.getPosition() + " - " + v.getCaption())
                 .forEach(System.out::println);
+    }
+
+    public static GameMenu select(String input) throws IncorrectMenuChoice {
+        int choice = Integer.parseInt(input);
+        switch (choice) {
+            case 1:
+                return PLAY;
+            case 2:
+                return SETTINGS;
+            case 3:
+                return EXIT;
+            default:
+                throw new IncorrectMenuChoice(input);
+        }
     }
 
     public int getPosition() {
