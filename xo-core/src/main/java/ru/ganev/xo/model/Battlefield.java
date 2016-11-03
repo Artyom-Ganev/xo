@@ -20,9 +20,14 @@ public class Battlefield {
         fillEmptyCoordinates();
     }
 
+    public Optional<Figure> getFigure(Coordinate coordinate) {
+        return Optional.of(field.get(coordinate));
+    }
+
     public Optional<Figure> getFigure(int row, int col) {
         return Optional.of(field.get(new Coordinate(row, col)));
     }
+
 
     public void setFigure(int row, int col, Figure figure) {
         String error = format("%s %s", row, col);
@@ -33,6 +38,10 @@ public class Battlefield {
             throw new AlreadyExistException(error);
         }
         field.put(new Coordinate(row, col), figure);
+    }
+
+    public void setFigure(Coordinate coordinate, Figure figure) {
+        setFigure(coordinate.getRow(), coordinate.getCol(), figure);
     }
 
     public int getDimension() {

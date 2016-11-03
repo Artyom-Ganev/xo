@@ -34,6 +34,10 @@ public class GameSettings implements Cloneable {
         this.playersCount = playersCount;
     }
 
+    public Map<Figure, Player> getPlayers() {
+        return players;
+    }
+
     public void setPlayers(Map<Figure, Player> players) {
         this.players = players;
     }

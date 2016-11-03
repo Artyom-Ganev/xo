@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 import ru.ganev.xo.exception.IncorrectMenuChoice;
+import ru.ganev.xo.model.Coordinate;
+import ru.ganev.xo.model.Figure;
 import ru.ganev.xo.model.GameSettings;
 import ru.ganev.xo.view.menu.GameMenu;
 
@@ -17,12 +19,6 @@ public class GameViewer implements View {
 
     public GameViewer() {
         this.reader = new BufferedReader(new InputStreamReader(System.in));
-    }
-
-    private static void printSettingsMenu() {
-        out.println("1 - Board size");
-        out.println("2 - Players count");
-        out.println("3 - Back");
     }
 
     @Override
@@ -41,6 +37,27 @@ public class GameViewer implements View {
         } while (selected == null);
         executeMenu(selected);
         return this.gameSettings;
+    }
+
+    @Override
+    public Coordinate getNextMovement(Figure figure) {
+        return null;
+    }
+
+    @Override
+    public void printExceededMaxCoordinate(String msg) {
+
+    }
+
+    @Override
+    public void printAlreadyExist(String msg) {
+
+    }
+
+    private static void printSettingsMenu() {
+        out.println("1 - Board size");
+        out.println("2 - Players count");
+        out.println("3 - Back");
     }
 
     private void executeMenu(GameMenu selected) {

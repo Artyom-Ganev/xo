@@ -10,9 +10,8 @@ public class Game {
 
     private final Map<Figure, Player> players;
     private final Battlefield field;
-    private Figure current;
 
-    private Game(Map<Figure, Player> players, Battlefield field) {
+    public Game(Map<Figure, Player> players, Battlefield field) {
         this.players = players;
         check();
         this.field = field;
@@ -30,28 +29,21 @@ public class Game {
         return field;
     }
 
-    public Figure getCurrent() {
-        return current;
-    }
-
-    public void setCurrent(Figure current) {
-        this.current = current;
-    }
-
     private void check() {
-        switch (players.size()) {
-            case 0:
-                throw new IllegalArgumentException("No players selected");
-            case 1:
-                Optional selected = Optional.of(players.get(X));
-                Player ai = new Player("AI", true);
-                if (selected.isPresent()) {
-                    players.put(O, ai);
-                } else {
-                    players.put(X, ai);
-                }
+        final int size = players.size();
+        Player ai = new Player("AI", true);
+        if (size == 0) {
+            players.put(O, ai);
+            players.put(X, ai);
         }
-
+        if (size == 1) {
+            Optional selected = Optional.of(players.get(X));
+            if (selected.isPresent()) {
+                players.put(O, ai);
+            } else {
+                players.put(X, ai);
+            }
+        }
     }
 }
 
