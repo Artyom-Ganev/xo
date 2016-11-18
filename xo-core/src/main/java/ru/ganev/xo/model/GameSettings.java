@@ -5,10 +5,10 @@ import java.util.Map;
 
 import ru.ganev.xo.exception.AlreadySelectedFigure;
 
-public class GameSettings implements Cloneable {
+public class GameSettings {
 
-    public static int DEFAULT_PLAYERS_COUNT = 2;
-    public static int DEFAULT_DIMENSION = 3;
+    public static final int DEFAULT_PLAYERS_COUNT = 2;
+    public static final int DEFAULT_DIMENSION = 3;
     private Map<Figure, Player> players;
     private int dimension;
     private int playersCount;
@@ -16,6 +16,16 @@ public class GameSettings implements Cloneable {
     public GameSettings() {
         dimension = DEFAULT_DIMENSION;
         playersCount = DEFAULT_PLAYERS_COUNT;
+    }
+
+    public GameSettings(Map<Figure, Player> players, int dimension, int playersCount) {
+        this.players = players;
+        this.dimension = dimension;
+        this.playersCount = playersCount;
+    }
+
+    public GameSettings(GameSettings other) {
+        this(other.getPlayers(), other.getDimension(), other.getPlayersCount());
     }
 
     public int getDimension() {
@@ -43,7 +53,7 @@ public class GameSettings implements Cloneable {
     }
 
     public void addPlayer(Figure figure, Player player) throws AlreadySelectedFigure {
-        assert (figure != null && player != null);
+        assert figure != null && player != null;
         if (players == null) {
             players = new HashMap<>();
         }
@@ -51,18 +61,5 @@ public class GameSettings implements Cloneable {
             throw new AlreadySelectedFigure(figure.name());
         }
         players.put(figure, player);
-    }
-
-    @Override
-    public GameSettings clone() {
-        try {
-            GameSettings newSettings = (GameSettings) super.clone();
-            newSettings.players = this.players;
-            newSettings.dimension = this.dimension;
-            newSettings.playersCount = this.playersCount;
-            return newSettings;
-        } catch (CloneNotSupportedException e) {
-            throw new InternalError(e);
-        }
     }
 }

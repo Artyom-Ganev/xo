@@ -22,9 +22,6 @@ public class GameController implements Controller {
     private Figure next = O;
     private boolean haveWinner;
 
-    public GameController() {
-    }
-
     @Override
     public void startGame(View view) {
         GameSettings settings = view.startGameMenu(new GameSettings());

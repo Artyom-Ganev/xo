@@ -10,12 +10,14 @@ import ru.ganev.xo.model.Figure;
 import ru.ganev.xo.model.GameSettings;
 import ru.ganev.xo.view.menu.GameMenu;
 
+import static java.lang.System.exit;
 import static java.lang.System.out;
 
 public class GameViewer implements View {
 
     private BufferedReader reader;
     private GameSettings gameSettings;
+    private static final String INCORRECT_CHOICE_MSG = "Incorrect choice";
 
     public GameViewer() {
         this.reader = new BufferedReader(new InputStreamReader(System.in));
@@ -23,7 +25,7 @@ public class GameViewer implements View {
 
     @Override
     public GameSettings startGameMenu(GameSettings gameSettings) {
-        this.gameSettings = gameSettings.clone();
+        this.gameSettings =  new GameSettings(gameSettings);
         GameMenu.print();
         GameMenu selected = null;
         do {
@@ -64,11 +66,13 @@ public class GameViewer implements View {
         switch (selected) {
             case PLAY:
                 playMenu();
+                break;
             case SETTINGS:
                 settingsMenu();
                 GameMenu.print();
+                break;
             default:
-                System.exit(0);
+                exit(0);
         }
     }
 
@@ -85,7 +89,7 @@ public class GameViewer implements View {
                     out.println("Please, enter game board size");
                     int size = readChoice();
                     if (size < GameSettings.DEFAULT_DIMENSION || size < 0) {
-                        out.println("Incorrect choice");
+                        out.println(INCORRECT_CHOICE_MSG);
                     } else {
                         gameSettings.setDimension(size);
                         out.println("Settings saved");
@@ -96,7 +100,7 @@ public class GameViewer implements View {
                     out.println("Please, enter players count");
                     int count = readChoice();
                     if (count > GameSettings.DEFAULT_PLAYERS_COUNT || count < 0) {
-                        out.println("Incorrect choice");
+                        out.println(INCORRECT_CHOICE_MSG);
                     } else {
                         gameSettings.setPlayersCount(count);
                         out.println("Settings saved");
@@ -118,7 +122,7 @@ public class GameViewer implements View {
         } catch (IOException e) {
             throw new RuntimeException(e);
         } catch (NumberFormatException e) {
-            out.println("Incorrect choice");
+            out.println(INCORRECT_CHOICE_MSG);
         }
         return -1;
     }
