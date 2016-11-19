@@ -24,8 +24,8 @@ public class GameController implements Controller {
 
     @Override
     public void startGame(View view) {
-        GameSettings settings = view.startGameMenu(new GameSettings());
-        game = new Game(settings.getPlayers(), new Battlefield(settings.getDimension()));
+        GameSettings settings = view.startGameMenu();
+        game = new Game(settings.getPlayers(), settings.getDimension());
         while (haveWinner) {
             Coordinate nextMovement = view.getNextMovement(next);
             try {

@@ -11,10 +11,10 @@ public class Game {
     private final Map<Figure, Player> players;
     private final Battlefield field;
 
-    public Game(Map<Figure, Player> players, Battlefield field) {
+    public Game(Map<Figure, Player> players, int dimension) {
         this.players = players;
         check();
-        this.field = field;
+        this.field = new Battlefield(dimension);
     }
 
     public Player getPlayer1() {

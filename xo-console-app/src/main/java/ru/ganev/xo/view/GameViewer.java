@@ -24,8 +24,8 @@ public class GameViewer implements View {
     }
 
     @Override
-    public GameSettings startGameMenu(GameSettings gameSettings) {
-        this.gameSettings =  new GameSettings(gameSettings);
+    public GameSettings startGameMenu() {
+        this.gameSettings =  new GameSettings();
         GameMenu.print();
         GameMenu selected = null;
         do {

@@ -5,7 +5,7 @@ import java.util.Map;
 
 import ru.ganev.xo.exception.AlreadySelectedFigure;
 
-public class GameSettings {
+public final class GameSettings {
 
     public static final int DEFAULT_PLAYERS_COUNT = 2;
     public static final int DEFAULT_DIMENSION = 3;
@@ -14,18 +14,8 @@ public class GameSettings {
     private int playersCount;
 
     public GameSettings() {
-        dimension = DEFAULT_DIMENSION;
-        playersCount = DEFAULT_PLAYERS_COUNT;
-    }
-
-    public GameSettings(Map<Figure, Player> players, int dimension, int playersCount) {
-        this.players = players;
-        this.dimension = dimension;
-        this.playersCount = playersCount;
-    }
-
-    public GameSettings(GameSettings other) {
-        this(other.getPlayers(), other.getDimension(), other.getPlayersCount());
+        this.dimension = DEFAULT_DIMENSION;
+        this.playersCount = DEFAULT_PLAYERS_COUNT;
     }
 
     public int getDimension() {

@@ -6,7 +6,7 @@ import ru.ganev.xo.model.GameSettings;
 
 public interface View {
 
-    GameSettings startGameMenu(GameSettings gameSettings);
+    GameSettings startGameMenu();
 
     Coordinate getNextMovement(Figure figure);
 
