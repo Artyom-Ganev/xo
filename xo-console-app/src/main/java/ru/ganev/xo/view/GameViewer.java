@@ -4,14 +4,18 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import ru.ganev.xo.exception.AlreadySelectedFigure;
 import ru.ganev.xo.exception.IncorrectMenuChoice;
 import ru.ganev.xo.model.Coordinate;
 import ru.ganev.xo.model.Figure;
 import ru.ganev.xo.model.GameSettings;
+import ru.ganev.xo.model.Player;
 import ru.ganev.xo.view.menu.GameMenu;
 
 import static java.lang.System.exit;
 import static java.lang.System.out;
+import static ru.ganev.xo.model.Figure.O;
+import static ru.ganev.xo.model.Figure.X;
 
 public class GameViewer implements View {
 
@@ -25,10 +29,11 @@ public class GameViewer implements View {
 
     @Override
     public GameSettings startGameMenu() {
-        this.gameSettings =  new GameSettings();
+        this.gameSettings = new GameSettings();
         GameMenu.print();
         GameMenu selected = null;
-        do {
+        boolean exit = false;
+        while (!exit) {
             try {
                 selected = GameMenu.select(reader.readLine());
             } catch (IOException e) {
@@ -36,8 +41,8 @@ public class GameViewer implements View {
             } catch (IncorrectMenuChoice e) {
                 out.println("Incorrect menu choice: " + e.getMessage());
             }
-        } while (selected == null);
-        executeMenu(selected);
+            exit = executeMenu(selected);
+        }
         return this.gameSettings;
     }
 
@@ -62,22 +67,48 @@ public class GameViewer implements View {
         out.println("3 - Back");
     }
 
-    private void executeMenu(GameMenu selected) {
+    private boolean executeMenu(GameMenu selected) {
         switch (selected) {
             case PLAY:
                 playMenu();
-                break;
+                return true;
             case SETTINGS:
                 settingsMenu();
                 GameMenu.print();
-                break;
+                return false;
             default:
                 exit(0);
         }
+        return true;
     }
 
     private void playMenu() {
+        int count = gameSettings.getPlayersCount();
+        if (count > 0) {
+            enterPlayer(X);
+        }
+        if (count == 2) {
+            enterPlayer(O);
+        }
+        if (count > 2) {
+            throw new RuntimeException("Unsupported players count");
+        }
+    }
 
+    private void enterPlayer(Figure figure) {
+        boolean selected = false;
+        String name;
+        while (!selected) {
+            out.println(String.format("Enter Player %s name", figure.name()));
+            try {
+                name = reader.readLine();
+                gameSettings.addPlayer(figure, new Player(name));
+                selected = true;
+            } catch (IOException | AlreadySelectedFigure e) {
+                //TODO: обработать ситуацию с уже выбанной фигурой
+                throw new RuntimeException(e);
+            }
+        }
     }
 
     private void settingsMenu() {

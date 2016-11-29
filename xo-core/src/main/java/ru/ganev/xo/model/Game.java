@@ -1,5 +1,6 @@
 package ru.ganev.xo.model;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
@@ -8,7 +9,7 @@ import static ru.ganev.xo.model.Figure.X;
 
 public class Game {
 
-    private final Map<Figure, Player> players;
+    private Map<Figure, Player> players;
     private final Battlefield field;
 
     public Game(Map<Figure, Player> players, int dimension) {
@@ -30,6 +31,9 @@ public class Game {
     }
 
     private void check() {
+        if (players == null) {
+            players = new HashMap<>();
+        }
         final int size = players.size();
         Player ai = new Player("AI", true);
         if (size == 0) {
