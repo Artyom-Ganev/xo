@@ -18,15 +18,15 @@ import static ru.ganev.xo.model.Figure.X;
 public class GameController implements Controller {
 
     private Game game;
-    private Figure current = X;
-    private Figure next = O;
+    private Figure current = O;
+    private Figure next = X;
     private boolean haveWinner;
 
     @Override
     public void startGame(View view) {
         GameSettings settings = view.startGameMenu();
         game = new Game(settings.getPlayers(), settings.getDimension());
-        while (haveWinner) {
+        while (!haveWinner) {
             Coordinate nextMovement = view.getNextMovement(next);
             try {
                 game.getField().setFigure(nextMovement, next);

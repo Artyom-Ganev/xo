@@ -1,6 +1,6 @@
 package ru.ganev.xo.model;
 
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.Map;
 import java.util.Optional;
 
@@ -32,7 +32,7 @@ public class Game {
 
     private void check() {
         if (players == null) {
-            players = new HashMap<>();
+            players = new EnumMap<>(Figure.class);
         }
         final int size = players.size();
         Player ai = new Player("AI", true);

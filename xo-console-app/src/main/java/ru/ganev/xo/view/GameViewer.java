@@ -3,7 +3,6 @@ package ru.ganev.xo.view;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 import ru.ganev.xo.exception.AlreadySelectedFigure;
@@ -14,6 +13,7 @@ import ru.ganev.xo.model.GameSettings;
 import ru.ganev.xo.model.Player;
 import ru.ganev.xo.view.menu.GameMenu;
 
+import static java.lang.String.format;
 import static java.lang.System.exit;
 import static java.lang.System.out;
 import static ru.ganev.xo.model.Figure.O;
@@ -52,17 +52,20 @@ public class GameViewer implements View {
 
     @Override
     public Coordinate getNextMovement(Figure figure) {
-        return null;
+        out.println(format("Players %s movement", figure.name()));
+        int row = makeChoice("Enter row coordinate", choice -> false);
+        int col = makeChoice("Enter column coordinate", choice -> false);
+        return new Coordinate(row, col) ;
     }
 
     @Override
     public void printExceededMaxCoordinate(String msg) {
-
+        out.println(msg);
     }
 
     @Override
     public void printAlreadyExist(String msg) {
-
+        out.println(msg);
     }
 
     private static void printSettingsMenu() {
@@ -103,7 +106,7 @@ public class GameViewer implements View {
         boolean selected = false;
         String name;
         while (!selected) {
-            out.println(String.format("Enter Player %s name", figure.name()));
+            out.println(format("Enter Player %s name", figure.name()));
             try {
                 name = reader.readLine();
                 gameSettings.addPlayer(figure, new Player(name));
@@ -121,12 +124,16 @@ public class GameViewer implements View {
         while (!exit) {
             switch (readChoice()) {
                 case 1:
-                    makeChoice("Please, enter game board size", size -> size < DEFAULT_DIMENSION || size < 0,
-                            gameSettings::setDimension);
+                    gameSettings.setDimension(makeChoice("Please, enter game board size",
+                            size -> size < DEFAULT_DIMENSION || size < 0));
+                    out.println("Settings saved");
+                    printSettingsMenu();
                     break;
                 case 2:
-                    makeChoice("Please, enter players count", count -> count > DEFAULT_PLAYERS_COUNT || count < 0,
-                            gameSettings::setPlayersCount);
+                    gameSettings.setPlayersCount(makeChoice("Please, enter players count",
+                            count -> count > DEFAULT_PLAYERS_COUNT || count < 0));
+                    out.println("Settings saved");
+                    printSettingsMenu();
                     break;
                 case 3:
                     exit = true;
@@ -136,20 +143,16 @@ public class GameViewer implements View {
         }
     }
 
-    private void makeChoice(String choiceMsg, Predicate<Integer> incorrectChoice, Consumer<Integer> applyResult) {
-        boolean correctChoice = false;
-        while (!correctChoice) {
+    private int makeChoice(String choiceMsg, Predicate<Integer> incorrectChoice) {
+        while (true) {
             out.println(choiceMsg);
             int choice = readChoice();
             if (incorrectChoice.test(choice)) {
                 out.println(INCORRECT_CHOICE_MSG);
             } else {
-                applyResult.accept(choice);
-                out.println("Settings saved");
-                correctChoice = true;
+                return choice;
             }
         }
-        printSettingsMenu();
     }
 
     private int readChoice() {
