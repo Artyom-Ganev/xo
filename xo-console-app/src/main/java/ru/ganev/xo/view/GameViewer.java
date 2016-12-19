@@ -3,6 +3,7 @@ package ru.ganev.xo.view;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 import ru.ganev.xo.exception.AlreadySelectedFigure;
@@ -120,10 +121,12 @@ public class GameViewer implements View {
         while (!exit) {
             switch (readChoice()) {
                 case 1:
-                    makeChoice("Please, enter game board size", size -> size < DEFAULT_DIMENSION || size < 0);
+                    makeChoice("Please, enter game board size", size -> size < DEFAULT_DIMENSION || size < 0,
+                            gameSettings::setDimension);
                     break;
                 case 2:
-                    makeChoice("Please, enter players count", count -> count > DEFAULT_PLAYERS_COUNT || count < 0);
+                    makeChoice("Please, enter players count", count -> count > DEFAULT_PLAYERS_COUNT || count < 0,
+                            gameSettings::setPlayersCount);
                     break;
                 case 3:
                     exit = true;
@@ -133,7 +136,7 @@ public class GameViewer implements View {
         }
     }
 
-    private void makeChoice(String choiceMsg, Predicate<Integer> incorrectChoice) {
+    private void makeChoice(String choiceMsg, Predicate<Integer> incorrectChoice, Consumer<Integer> applyResult) {
         boolean correctChoice = false;
         while (!correctChoice) {
             out.println(choiceMsg);
@@ -141,7 +144,7 @@ public class GameViewer implements View {
             if (incorrectChoice.test(choice)) {
                 out.println(INCORRECT_CHOICE_MSG);
             } else {
-                gameSettings.setPlayersCount(choice);
+                applyResult.accept(choice);
                 out.println("Settings saved");
                 correctChoice = true;
             }
