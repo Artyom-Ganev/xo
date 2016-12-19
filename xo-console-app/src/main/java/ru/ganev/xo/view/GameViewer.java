@@ -3,6 +3,7 @@ package ru.ganev.xo.view;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.function.Predicate;
 
 import ru.ganev.xo.exception.AlreadySelectedFigure;
 import ru.ganev.xo.exception.IncorrectMenuChoice;
@@ -16,12 +17,14 @@ import static java.lang.System.exit;
 import static java.lang.System.out;
 import static ru.ganev.xo.model.Figure.O;
 import static ru.ganev.xo.model.Figure.X;
+import static ru.ganev.xo.model.GameSettings.DEFAULT_DIMENSION;
+import static ru.ganev.xo.model.GameSettings.DEFAULT_PLAYERS_COUNT;
 
 public class GameViewer implements View {
 
+    private static final String INCORRECT_CHOICE_MSG = "Incorrect choice";
     private BufferedReader reader;
     private GameSettings gameSettings;
-    private static final String INCORRECT_CHOICE_MSG = "Incorrect choice";
 
     public GameViewer() {
         this.reader = new BufferedReader(new InputStreamReader(System.in));
@@ -117,26 +120,10 @@ public class GameViewer implements View {
         while (!exit) {
             switch (readChoice()) {
                 case 1:
-                    out.println("Please, enter game board size");
-                    int size = readChoice();
-                    if (size < GameSettings.DEFAULT_DIMENSION || size < 0) {
-                        out.println(INCORRECT_CHOICE_MSG);
-                    } else {
-                        gameSettings.setDimension(size);
-                        out.println("Settings saved");
-                    }
-                    printSettingsMenu();
+                    makeChoice("Please, enter game board size", size -> size < DEFAULT_DIMENSION || size < 0);
                     break;
                 case 2:
-                    out.println("Please, enter players count");
-                    int count = readChoice();
-                    if (count > GameSettings.DEFAULT_PLAYERS_COUNT || count < 0) {
-                        out.println(INCORRECT_CHOICE_MSG);
-                    } else {
-                        gameSettings.setPlayersCount(count);
-                        out.println("Settings saved");
-                    }
-                    printSettingsMenu();
+                    makeChoice("Please, enter players count", count -> count > DEFAULT_PLAYERS_COUNT || count < 0);
                     break;
                 case 3:
                     exit = true;
@@ -144,6 +131,22 @@ public class GameViewer implements View {
                 default:
             }
         }
+    }
+
+    private void makeChoice(String choiceMsg, Predicate<Integer> incorrectChoice) {
+        boolean correctChoice = false;
+        while (!correctChoice) {
+            out.println(choiceMsg);
+            int choice = readChoice();
+            if (incorrectChoice.test(choice)) {
+                out.println(INCORRECT_CHOICE_MSG);
+            } else {
+                gameSettings.setPlayersCount(choice);
+                out.println("Settings saved");
+                correctChoice = true;
+            }
+        }
+        printSettingsMenu();
     }
 
     private int readChoice() {
