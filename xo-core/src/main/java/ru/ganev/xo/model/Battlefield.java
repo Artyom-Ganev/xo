@@ -21,27 +21,24 @@ public class Battlefield {
     }
 
     public Optional<Figure> getFigure(Coordinate coordinate) {
-        return Optional.of(field.get(coordinate));
+        return Optional.ofNullable(field.get(coordinate));
     }
 
     public Optional<Figure> getFigure(int row, int col) {
-        return Optional.of(field.get(new Coordinate(row, col)));
+        return getFigure(new Coordinate(row, col));
     }
 
-
-    public void setFigure(int row, int col, Figure figure) {
+    public void setFigure(Coordinate coordinate, Figure figure) {
+        int row = coordinate.getRow();
+        int col = coordinate.getCol();
         String error = format("%s %s", row, col);
         if (row > dimension || col > dimension) {
             throw new ExceededMaxCoordinateException(error);
         }
-        if (getFigure(row, col).isPresent()) {
+        if (getFigure(coordinate).isPresent()) {
             throw new AlreadyExistException(error);
         }
-        field.put(new Coordinate(row, col), figure);
-    }
-
-    public void setFigure(Coordinate coordinate, Figure figure) {
-        setFigure(coordinate.getRow(), coordinate.getCol(), figure);
+        field.put(coordinate, figure);
     }
 
     public int getDimension() {

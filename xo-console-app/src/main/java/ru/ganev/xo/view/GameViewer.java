@@ -7,6 +7,7 @@ import java.util.function.Predicate;
 
 import ru.ganev.xo.exception.AlreadySelectedFigure;
 import ru.ganev.xo.exception.IncorrectMenuChoice;
+import ru.ganev.xo.model.Battlefield;
 import ru.ganev.xo.model.Coordinate;
 import ru.ganev.xo.model.Figure;
 import ru.ganev.xo.model.GameSettings;
@@ -55,7 +56,7 @@ public class GameViewer implements View {
         out.println(format("Players %s movement", figure.name()));
         int row = makeChoice("Enter row coordinate", choice -> false);
         int col = makeChoice("Enter column coordinate", choice -> false);
-        return new Coordinate(row, col) ;
+        return new Coordinate(row - 1, col - 1) ;
     }
 
     @Override
@@ -66,6 +67,18 @@ public class GameViewer implements View {
     @Override
     public void printAlreadyExist(String msg) {
         out.println(msg);
+    }
+
+    @Override
+    public void printCurrentState(Battlefield field) {
+        int dimension = field.getDimension();
+        for (int i = 0; i < dimension; i++) {
+            for (int j = 0; j < dimension; j++) {
+                out.print(format("| %s ", field.getFigure(i, j).map(Object::toString).orElse(" ")));
+            }
+            out.println("|");
+            out.println("--------------");
+        }
     }
 
     private static void printSettingsMenu() {
