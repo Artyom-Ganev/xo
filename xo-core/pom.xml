@@ -8,7 +8,7 @@
 
     <modelVersion>4.0.0</modelVersion>
     <artifactId>xo-core</artifactId>
-    <packaging>takari-jar</packaging>
+    <packaging>jar</packaging>
     <name>xo-core</name>
 
     <dependencies>

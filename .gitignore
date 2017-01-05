@@ -1,6 +1,4 @@
-# Build files
 target
-/.mvn/timing.properties
 
 # Intellij IDEA project files
 .idea
