@@ -16,15 +16,16 @@
 
         <plugins>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
+                <groupId>io.takari.maven.plugins</groupId>
+                <artifactId>takari-lifecycle-plugin</artifactId>
+                <version>1.11.10</version>
+                <extensions>true</extensions>
                 <configuration>
                     <source>1.8</source>
                     <target>1.8</target>
-                    <compilerVersion>1.8</compilerVersion>
-                    <testSource>1.8</testSource>
-                    <testTarget>1.8</testTarget>
-                    <encoding>UTF-8</encoding>
+                    <sourceJar>true</sourceJar>
+                    <testJar>true</testJar>
+                    <proc>none</proc>
                 </configuration>
             </plugin>
         </plugins>
